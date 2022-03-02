@@ -1,0 +1,18 @@
+﻿@media (prefers-color-scheme: dark) {
+    body,
+    nav,
+    .bg-white,
+    .text-dark,
+    .navbar-brand {
+        background-color: #222 !important;
+        color: #fff !important;
+    }
+
+    a.text-dark:hover {
+        color: #ddd !important;
+    }
+
+    .text-muted {
+        color: #aaa !important;
+    }
+}
