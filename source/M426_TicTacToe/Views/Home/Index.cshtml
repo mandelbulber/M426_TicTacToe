@@ -3,6 +3,20 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1>Demo TicTacToe</h1>
+    <table>
+        <tbody>
+            @for (int i = 0; i < 3; i++)
+            {
+                <tr>
+                    @for (int j = 0; j < 3; j++)
+                    {
+                        <td><button class="gameButton" style="height: 100px; width: 100px;" id="btn@(i * 3 + j + 1)"></button></td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/signalr/ticTacToe.js"></script>

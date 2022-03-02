@@ -67,7 +67,7 @@ namespace M426_TicTacToe
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapHub<TicTacToeHub>("/chatHub");
+                endpoints.MapHub<TicTacToeHub>("/ticTacToe");
             });
         }
     }
