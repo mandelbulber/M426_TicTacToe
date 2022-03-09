@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace M426_TicTacToe.Models
 {
     public class Game
     {
-        public int Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
         public virtual string Player1 { get; set; }
         public virtual string Player2 { get; set; }
         public int Winner { get; set; }
