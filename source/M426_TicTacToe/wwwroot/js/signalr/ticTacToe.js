@@ -10,7 +10,7 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-for (let i = 1; i <= 9; i++) {
+for (let i = 0; i < 9; i++) {
     $("#btn" + i).click(function (event) {
         connection.invoke("ClickField", i).catch(function (err) {
             return console.error(err.toString());
