@@ -21,14 +21,14 @@
                         @for (int j = 0; j < 3; j++) 
                         {
                         <td>
-                            <button onclick="connection.invoke('ClickField', @(i * 3 + j))" class="GameButton" id="@Html.Raw("btn" + (i * 3 + j))">
+                            <button onclick="connection.invoke('ClickField', @Html.Raw("'" + Model.Id + "'"), @(i * 3 + j))" class="GameButton" id="@Html.Raw("btn" + (i * 3 + j))">
                                 @switch (Model.Board[i * 3 + j])
                                 {
                                     case FieldState.player1:
-                                        Html.Raw("X");
+                                        @Html.Raw("X");
                                         break;
                                     case FieldState.player2:
-                                        Html.Raw("O");
+                                        @Html.Raw("O");
                                         break;
 
                                 }

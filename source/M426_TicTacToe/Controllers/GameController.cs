@@ -29,11 +29,21 @@ namespace M426_TicTacToe.Controllers
             return View();
         }
 
+        [HttpGet("play/{id}")]
         public IActionResult Game(string id)
         {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             Game game = _dbContext.Games.FirstOrDefault(x => x.Id == id);
             if (game == null)
-                return NotFound();
+                return RedirectToAction("Index");
+
+            if (game.Player2 == null && userId != game.Player1)
+            {
+                game.Player2 = userId;
+                _dbContext.Games.Update(game);
+                _dbContext.SaveChanges();
+            }
+
             GameViewModel gameViewModel = new()
             {
                 Id = game.Id,
@@ -49,15 +59,23 @@ namespace M426_TicTacToe.Controllers
         public IActionResult NewGame()
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            FieldState[] fieldStates = new FieldState[9];
+            for (int i = 0; i < 9; i++)
+            {
+                fieldStates[i] = FieldState.none;
+            }
+
             Game newGame = new()
             {
-                Id = "Temp",
                 Player1 = userId,
+                Board = JsonConvert.SerializeObject(fieldStates),
                 TimeStamp = DateTime.Now
             };
+
             _dbContext.Games.Add(newGame);
             _dbContext.SaveChanges();
-            return RedirectToAction("Game", newGame.Id);
+
+            return RedirectToAction("Game", new { id = newGame.Id });
         }
     }
 }
