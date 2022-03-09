@@ -9,7 +9,7 @@ namespace M426_TicTacToe.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<History> Histories { get; set; }
+        public DbSet<Game> Games { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
