@@ -10,15 +10,6 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-for (let i = 0; i < 9; i++) {
-    $("#btn" + i).click(function (event) {
-        connection.invoke("ClickField", i).catch(function (err) {
-            return console.error(err.toString());
-        });
-        event.preventDefault();
-    });
-}
-
 connection.on("UpdateField", function (fieldNumber, fieldContent) {
     $("#btn" + fieldNumber).text(fieldContent);
 });
