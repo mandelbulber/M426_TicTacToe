@@ -4,16 +4,14 @@ using M426_TicTacToe.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace M426_TicTacToe.Data.Migrations
+namespace M426_TicTacToe.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220302101854_added_history")]
-    partial class added_history
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,14 +19,13 @@ namespace M426_TicTacToe.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("M426_TicTacToe.Models.History", b =>
+            modelBuilder.Entity("M426_TicTacToe.Models.Game", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<string>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Game")
+                    b.Property<string>("Board")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Player1")
@@ -37,9 +34,15 @@ namespace M426_TicTacToe.Data.Migrations
                     b.Property<string>("Player2")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Winner")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Histories");
+                    b.ToTable("Games");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
