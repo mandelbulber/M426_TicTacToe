@@ -1,0 +1,32 @@
+﻿/*.*.*.*.* Design for History Page *.*.*.*.*/
+
+.GamePreviewList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.GamePreviewList h2{
+    width: 100%
+}
+
+.GamePreviewList div{
+    border: 2px solid white;
+    margin: 1%;
+    padding: 1%;
+    display: flex;
+    flex-flow: column;
+    width: 28%;
+}
+
+.GamePreviewList div table{
+    margin: 0 20% 3% 20%;
+}
+
+.GamePreviewButton{
+    width: 98%;
+    margin: 1%;
+    color: white;
+    border: 1px solid white;
+    text-align: center;
+} 

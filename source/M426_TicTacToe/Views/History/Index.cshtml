@@ -4,7 +4,7 @@
 
 @{
     var unfinishedGamesCount= 0;
-    var finishedGamesCount= 0;
+    var closedGamesCount= 0;
     @foreach (GameViewModel game in Model)
     {
         if(game.GameState == GameState.pending)
@@ -13,24 +13,23 @@
         }
         else
         {
-            finishedGamesCount += 1;
+            closedGamesCount += 1;
         }
     }
-    <div>
+    <div class="GamePreviewList">
         <h2>Unfinished Games (@unfinishedGamesCount)</h2>
         @foreach (GameViewModel game in Model.Where(g => g.GameState == GameState.pending))
         {
-            <div style="border: 1px solid black">
-                <table class="GamePreview">
-                    <thead>@game.Player1 vs @game.Player2</thead>
-                    <tbody>
+            <div>
+                <h3>@game.Player1 vs @game.Player2</h3>
+                <table>
                         @for (int i = 0; i < 3; i++)
                         {
                             <tr>
                                 @for (int j = 0; j < 3; j++)
                                 {
                                     <td>
-                                        <button disabled>
+                                        <button class="GamePreviewButton" disabled>
                                             @switch (game.Board[i * 3 + j])
                                             {
                                                 case FieldState.player1:
@@ -39,31 +38,32 @@
                                                 case FieldState.player2:
                                                     @Html.Raw("O");
                                                     break;
+                                                default:
+                                                    @Html.Raw("&#160;");
+                                                    break;
                                             }
                                         </button>
                                     </td>
                                 }
                             </tr>
                         }
-                    </tbody>
                 </table>
                 <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", game.Id) + "'");">Continue game</button>
             </div>
         }
-        <h2>Finished Games (@finishedGamesCount)</h2>
+        <h2>Closed Games (@closedGamesCount)</h2>
         @foreach (GameViewModel game in Model.Where(g => g.GameState != GameState.pending))
         {
-            <div style="border: 1px solid black">
+            <div>
+                <h3>@game.Player1 vs @game.Player2</h3>
                 <table class="GamePreview">
-                    <thead>@game.Player1 vs @game.Player2</thead>
-                    <tbody>
                         @for (int i = 0; i < 3; i++)
                         {
                             <tr>
                                 @for (int j = 0; j < 3; j++)
                                 {
                                     <td>
-                                        <button disabled>
+                                        <button class="GamePreviewButton" disabled>
                                             @switch (game.Board[i * 3 + j])
                                             {
                                                 case FieldState.player1:
@@ -72,15 +72,17 @@
                                                 case FieldState.player2:
                                                     @Html.Raw("O");
                                                     break;
+                                                default:
+                                                    @Html.Raw("&#160;");
+                                                    break;
                                             }
                                         </button>
                                     </td>
                                 }
                             </tr>
                         }
-                    </tbody>
                 </table>
-                <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", game.Id) + "'");">Game over. See endstate</button>
+                <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", game.Id) + "'");">See final gamestate</button>
             </div>
         }
     </div>
