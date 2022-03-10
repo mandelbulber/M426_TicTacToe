@@ -1,0 +1,29 @@
+﻿@using M426_TicTacToe.Models.ViewModels
+@using M426_TicTacToe.Enums;
+@model List<GameViewModel>
+
+@{
+    <div>
+        @foreach (GameViewModel game in Model)
+        {
+            <div style="border: 1px solid black">
+                <h4>@game.Player1 against @game.Player2</h4>
+                @switch (game.GameState)
+                {
+                    case GameState.draw:
+                        <button>Game over, draw :3</button>
+                        break;
+                    case GameState.pending:
+                        <button>Continue game</button>
+                        break;
+                    case GameState.player1Won:
+                        <button>Game over, @game.Player1 won!</button>
+                        break;
+                    case GameState.player2Won:
+                        <button>Game over, @game.Player2 won!</button>
+                        break;
+                }
+            </div>
+        }
+    </div>
+}
