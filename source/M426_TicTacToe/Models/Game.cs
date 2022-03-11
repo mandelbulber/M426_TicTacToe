@@ -26,12 +26,15 @@ namespace M426_TicTacToe.Models
         public bool IsPlayer1()
         {
             var fieldStates = JsonConvert.DeserializeObject<FieldState[]>(Board);
+
+            // Count claimed fields
             int counter = 0;
             for (int i = 0; i < fieldStates.Length; i++)
             {
                 if (fieldStates[i] != FieldState.none)
                     counter++;
             }
+
             if (counter % 2 == 0)
                 return true;
             return false;

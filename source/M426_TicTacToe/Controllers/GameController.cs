@@ -35,13 +35,15 @@ namespace M426_TicTacToe.Controllers
             if (game == null)
                 return RedirectToAction("Index");
 
+            // Join existing game
             if (game.Player2 == null && userId != game.Player1)
             {
                 game.Player2 = userId;
                 _dbContext.Games.Update(game);
                 _dbContext.SaveChanges();
             }
-            if (userId != game.Player1 && userId != game.Player2)
+
+            if (userId != game.Player1 && userId != game.Player2) // Unauthorized?
                 return RedirectToAction("Index");
 
             GameViewModel gameViewModel = new()
@@ -53,6 +55,7 @@ namespace M426_TicTacToe.Controllers
                 GameState = (GameState)game.Winner,
                 Board = JsonConvert.DeserializeObject<FieldState[]>(game.Board)
             };
+
             return View(gameViewModel);
         }
 
