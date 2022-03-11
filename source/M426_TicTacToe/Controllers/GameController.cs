@@ -16,11 +16,9 @@ namespace M426_TicTacToe.Controllers
     [Authorize]
     public class GameController : Controller
     {
-        private IHubContext<TicTacToeHub> _hubContext;
         private ApplicationDbContext _dbContext;
-        public GameController(IHubContext<TicTacToeHub> hubContext, ApplicationDbContext dbContext)
+        public GameController(ApplicationDbContext dbContext)
         {
-            _hubContext = hubContext;
             _dbContext = dbContext;
         }
 
@@ -63,9 +61,7 @@ namespace M426_TicTacToe.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             FieldState[] fieldStates = new FieldState[9];
             for (int i = 0; i < 9; i++)
-            {
                 fieldStates[i] = FieldState.none;
-            }
 
             Game newGame = new()
             {

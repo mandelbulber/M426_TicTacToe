@@ -21,41 +21,45 @@ namespace M426_TicTacToe.Hubs
 
         public async Task ClickField(string gameId, int fieldNumber)
         {
+            // Setup variables
             string userId = Context.UserIdentifier;
             Game game = _dbContext.Games.ToList().FirstOrDefault(x => x.Id == gameId);
-            if (game == null)
-                return;
+            if (game == null) return;
             FieldState[] fieldStates = JsonConvert.DeserializeObject<FieldState[]>(game.Board);
             bool isPlayer1 = game.IsPlayer1();
 
-            // If game not found or no authorisation
-            if (game.Player1 != userId && game.Player2 != userId)
+            if (!IsInputValid(userId, game, isPlayer1, fieldNumber, fieldStates))
                 return;
-            if ((GameState)game.Winner != GameState.pending)
-                return;
-            if (isPlayer1)
-            {
-                if (userId != game.Player1)
-                    return;
-            }
-            else
-            {
-                if (userId != game.Player2)
-                    return;
-            }
-            if (fieldStates[fieldNumber] != FieldState.none)
-                return;
-            if (isPlayer1)
-                fieldStates[fieldNumber] = FieldState.player1;
-            else
-                fieldStates[fieldNumber] = FieldState.player2;
 
+            fieldStates[fieldNumber] = isPlayer1 ? FieldState.player1 : FieldState.player2;
             game.Board = JsonConvert.SerializeObject(fieldStates);
             game.TimeStamp = DateTime.Now;
+
             _dbContext.Update(game);
             _dbContext.SaveChanges();
 
             await Clients.Users(game.Player1, game.Player2).SendAsync("UpdateField", fieldNumber, isPlayer1 ? "X" : "O");
+        }
+
+
+        /// <summary>
+        /// Checks, if given circumstances are valid for claiming the field.
+        /// It's checking for authorization, game state, field state and if it's the users turn.
+        /// </summary>
+        /// <param name="userId">Id of user, calling the method.</param>
+        /// <param name="game">The game in the given context.</param>
+        /// <param name="isPlayer1">Is it player 1's turn?</param>
+        /// <param name="fieldNumber">Number of field wich user wants to claim.</param>
+        /// <param name="fieldStates">States of the fields (deserialized)</param>
+        /// <returns></returns>
+        private bool IsInputValid(string userId, Game game, bool isPlayer1, int fieldNumber, FieldState[] fieldStates)
+        {
+            if (game.Player1 == userId || game.Player2 == userId && // Authorized?
+                (GameState)game.Winner == GameState.pending &&      // Game pending?
+                fieldStates[fieldNumber] == FieldState.none &&      // Field empty?
+                (isPlayer1 == (userId == game.Player1)))            // User's turn?
+                return true;
+            return false;
         }
     }
 }
