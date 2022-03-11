@@ -23,14 +23,16 @@ namespace M426_TicTacToe.Hubs
         {
             string userId = Context.UserIdentifier;
             Game game = _dbContext.Games.ToList().FirstOrDefault(x => x.Id == gameId);
+            if (game == null)
+                return;
             FieldState[] fieldStates = JsonConvert.DeserializeObject<FieldState[]>(game.Board);
+            bool isPlayer1 = game.IsPlayer1();
 
             // If game not found or no authorisation
-            if (game == null || !(game.Player1 == userId || game.Player2 == userId))
+            if (game.Player1 != userId && game.Player2 != userId)
                 return;
             if ((GameState)game.Winner != GameState.pending)
                 return;
-            bool isPlayer1 = game.IsPlayer1();
             if (isPlayer1)
             {
                 if (userId != game.Player1)
