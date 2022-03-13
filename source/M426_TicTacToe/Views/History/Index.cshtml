@@ -3,6 +3,8 @@
 @model List<GameViewModel>
 
 @{
+    ViewData["Title"] = "History Page";
+
     var unfinishedGamesCount= 0;
     var closedGamesCount= 0;
     @foreach (GameViewModel game in Model)
@@ -16,12 +18,13 @@
             closedGamesCount += 1;
         }
     }
+
     <div class="GamePreviewList">
         <h2>Unfinished Games (@unfinishedGamesCount)</h2>
         @foreach (GameViewModel game in Model.Where(g => g.GameState == GameState.pending))
         {
             <div>
-                <h3>@game.Player1 vs @game.Player2</h3>
+                <h4>@game.Player1 (X) vs @game.Player2 (O)</h4>
                 <table>
                         @for (int i = 0; i < 3; i++)
                         {
@@ -55,7 +58,7 @@
         @foreach (GameViewModel game in Model.Where(g => g.GameState != GameState.pending))
         {
             <div>
-                <h3>@game.Player1 vs @game.Player2</h3>
+                <h4>@game.Player1 (X) vs @game.Player2 (O)</h4>
                 <table class="GamePreview">
                         @for (int i = 0; i < 3; i++)
                         {
