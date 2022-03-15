@@ -54,7 +54,7 @@ namespace M426_TicTacToe.Hubs
         /// <returns></returns>
         private bool IsInputValid(string userId, Game game, bool isPlayer1, int fieldNumber, FieldState[] fieldStates)
         {
-            if (game.Player1 == userId || game.Player2 == userId && // Authorized?
+            if ((game.Player1 == userId || game.Player2 == userId) && // Authorized?
                 (GameState)game.Winner == GameState.pending &&      // Game pending?
                 fieldStates[fieldNumber] == FieldState.none &&      // Field empty?
                 (isPlayer1 == (userId == game.Player1)))            // User's turn?
