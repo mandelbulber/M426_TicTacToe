@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using M426_TicTacToe.Enums;
+using Newtonsoft.Json;
 
 namespace M426_TicTacToe.Models
 {
@@ -17,5 +19,25 @@ namespace M426_TicTacToe.Models
         public string Board { get; set; }
 
 
+        /// <summary>
+        /// Uses Board to determine, if player 1 is active or not.
+        /// </summary>
+        /// <returns>True, if player 1 is active, otherwhise false.</returns>
+        public bool IsPlayer1()
+        {
+            var fieldStates = JsonConvert.DeserializeObject<FieldState[]>(Board);
+
+            // Count claimed fields
+            int counter = 0;
+            for (int i = 0; i < fieldStates.Length; i++)
+            {
+                if (fieldStates[i] != FieldState.none)
+                    counter++;
+            }
+
+            if (counter % 2 == 0)
+                return true;
+            return false;
+        }
     }
 }

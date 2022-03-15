@@ -4,63 +4,62 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
+using M426_TicTacToe.Data;
+using M426_TicTacToe.Models;
+using M426_TicTacToe.Enums;
+using Newtonsoft.Json;
 
 namespace M426_TicTacToe.Hubs
 {
     public class TicTacToeHub : Hub
     {
-        private static List<Game> _games = new();
-        public async Task ClickField(int fieldNumber)
+        private ApplicationDbContext _dbContext;
+        public TicTacToeHub(ApplicationDbContext dbContext)
         {
-            string userId = Context.UserIdentifier;
-            Game foundGame = _games.Find(x => (x.User1Id == userId || x.User2Id == userId) && !x.IsFinished);
-            bool senderIsUser1 = foundGame.User1Id == userId;
-            if (foundGame.IsUser1 && !senderIsUser1 || !foundGame.IsUser1 && senderIsUser1)
-                return;
-
-            if (foundGame.Fields[fieldNumber] != '\0')
-                return;
-
-            char fieldValue;
-            if (senderIsUser1)
-                fieldValue = 'X';
-            else
-                fieldValue = 'O';
-
-            foundGame.Fields[fieldNumber] = fieldValue;
-            foundGame.IsUser1 = !foundGame.IsUser1;
-            await Clients.Users(foundGame.User1Id, foundGame.User2Id).SendAsync("UpdateField", fieldNumber, fieldValue);
+            _dbContext = dbContext;
         }
 
-        public override Task OnConnectedAsync()
+        public async Task ClickField(string gameId, int fieldNumber)
         {
+            // Setup variables
             string userId = Context.UserIdentifier;
-            Game foundGame = _games.Find(x => (x.User1Id == userId || x.User2Id == userId) && !x.IsFinished);
-            if (foundGame == null)
-            {
-                if (_games.Count == 0 || _games.Last().User2Id != String.Empty)
-                    _games.Add(new() { User1Id = userId });
-                else
-                    _games.Last().User2Id = userId;
-            }
+            Game game = _dbContext.Games.ToList().FirstOrDefault(x => x.Id == gameId);
+            if (game == null) return;
+            FieldState[] fieldStates = JsonConvert.DeserializeObject<FieldState[]>(game.Board);
+            bool isPlayer1 = game.IsPlayer1();
 
-            return base.OnConnectedAsync();
+            if (!IsInputValid(userId, game, isPlayer1, fieldNumber, fieldStates))
+                return;
+
+            fieldStates[fieldNumber] = isPlayer1 ? FieldState.player1 : FieldState.player2;
+            game.Board = JsonConvert.SerializeObject(fieldStates);
+            game.TimeStamp = DateTime.Now;
+
+            _dbContext.Update(game);
+            _dbContext.SaveChanges();
+
+            await Clients.Users(game.Player1, game.Player2).SendAsync("UpdateField", fieldNumber, isPlayer1 ? "X" : "O");
         }
-    }
 
-    public class Game
-    {
-        public int Id { get; set; }
-        public string User1Id { get; set; }
-        public string User2Id { get; set; }
-        public bool IsUser1 { get; set; } = true;
-        public bool IsFinished { get; set; }
-        public char[] Fields { get; set; } = new char[9];
 
-        public Game()
+        /// <summary>
+        /// Checks, if given circumstances are valid for claiming the field.
+        /// It's checking for authorization, game state, field state and if it's the users turn.
+        /// </summary>
+        /// <param name="userId">Id of user, calling the method.</param>
+        /// <param name="game">The game in the given context.</param>
+        /// <param name="isPlayer1">Is it player 1's turn?</param>
+        /// <param name="fieldNumber">Number of field wich user wants to claim.</param>
+        /// <param name="fieldStates">States of the fields (deserialized)</param>
+        /// <returns></returns>
+        private bool IsInputValid(string userId, Game game, bool isPlayer1, int fieldNumber, FieldState[] fieldStates)
         {
-            Random random = new Random();
-            Id = random.Next(1000000, 9999999);
+            if ((game.Player1 == userId || game.Player2 == userId) && // Authorized?
+                (GameState)game.Winner == GameState.pending &&      // Game pending?
+                fieldStates[fieldNumber] == FieldState.none &&      // Field empty?
+                (isPlayer1 == (userId == game.Player1)))            // User's turn?
+                return true;
+            return false;
         }
     }
 }
