@@ -10,34 +10,31 @@
 <h1>@Model.Player2</h1>
 
 <div class="GameBoard">
-    <table>
-        <tbody>
-            @{
-                for (int i = 0; i < 3; i++)
+    @{
+        for (int i = 0; i < 3; i++)
+        {
+            <div class="GameRow">
+                @for (int j = 0; j < 3; j++)
                 {
-                    <tr>
-                        @for (int j = 0; j < 3; j++) 
-                        {
-                        <td>
-                            <button onclick="connection.invoke('ClickField', @Html.Raw("'" + Model.Id + "'"), @(i * 3 + j))" class="GameButton" id="@Html.Raw("btn" + (i * 3 + j))">
-                                @switch (Model.Board[i * 3 + j])
-                                {
-                                    case FieldState.player1:
-                                        @Html.Raw("X");
-                                        break;
-                                    case FieldState.player2:
-                                        @Html.Raw("O");
-                                        break;
-                                }
-                            </button>
-                        </td>
-                        }
-                    </tr>
+                    <div class="GameCell">
+                        <button onclick="connection.invoke('ClickField', @Html.Raw("'" + Model.Id + "'"), @(i * 3 + j))" class="GameButton" id="@Html.Raw("btn" + (i * 3 + j))">
+                            @switch (Model.Board[i * 3 + j])
+                            {
+                                case FieldState.player1:
+                                    @Html.Raw("X")
+                                    ;
+                                    break;
+                                case FieldState.player2:
+                                    @Html.Raw("O")
+                                    ;
+                                    break;
+                            }
+                        </button>
+                    </div>
                 }
-            }
-        </tbody>
-
-    </table>
+            </div>
+        }
+    }
 </div>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/signalr/ticTacToe.js"></script>
