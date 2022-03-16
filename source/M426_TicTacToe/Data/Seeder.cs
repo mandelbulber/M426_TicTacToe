@@ -44,6 +44,34 @@ namespace M426_TicTacToe.Data
 
             context.SaveChanges();
 
+            #region Add individual users to DB
+            if (!context.Users.Any(u => u.UserName == "nick@test.com"))
+            {
+                IdentityUser user = new IdentityUser { Email = "nick@test.com", UserName = "nick@test.com" };
+                await userManager.CreateAsync(user, "123456");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "tim@test.com"))
+            {
+                IdentityUser user = new IdentityUser { Email = "tim@test.com", UserName = "tim@test.com" };
+                await userManager.CreateAsync(user, "123456");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "marcel@test.com"))
+            {
+                IdentityUser user = new IdentityUser { Email = "marcel@test.com", UserName = "marcel@test.com" };
+                await userManager.CreateAsync(user, "123456");
+            }
+
+            if (!context.Users.Any(u => u.UserName == "andrin@test.com"))
+            {
+                IdentityUser user = new IdentityUser { Email = "andrin@test.com", UserName = "andrin@test.com" };
+                await userManager.CreateAsync(user, "123456");
+            }
+            #endregion
+
+            context.SaveChanges();
+
             #region Add roles to users
             IdentityUser adminUser = context.Users.SingleOrDefault(u => u.Email == "admin@test.com");
             IdentityUser testUser = context.Users.SingleOrDefault(u => u.Email == "test@test.com");

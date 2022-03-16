@@ -15,4 +15,14 @@
     .text-muted {
         color: #aaa !important;
     }
+
+    .GameButton {
+        border-color: white !important;
+        background-color: #333;
+        color: white;
+    }
+
+    .GameButton:active {
+        background-color: #555 !important;
+    }
 }
