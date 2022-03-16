@@ -18,3 +18,7 @@ Die Controller und der SignalR-Hub benötigen eine Datenbank. Unsere Applikation
 Die Model - View - Controller Architektur kommuniziert mit Client, und Entity Framework.
 
 Anfragen des Clients werden vom Controller aufgenommen, werden mit Entity Framework, den Views und Models verarbeitet und zurückgegeben.
+
+
+
+![](/ComponentDiagram.png)
