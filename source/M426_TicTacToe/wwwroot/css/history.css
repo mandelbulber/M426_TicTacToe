@@ -1,4 +1,18 @@
 ﻿/*.*.*.*.* Design for History Page *.*.*.*.*/
+@media (prefers-color-scheme: dark) {
+    .GamePreviewList div {
+        border: 2px solid white !important;
+    }
+
+    .GamePreviewList h2 {
+        border-bottom: 2px solid white !important;
+    }
+
+    .GamePreviewButton {
+        color: white !important;
+        border: 1px solid white !important;
+    }
+}
 
 .GamePreviewList {
     display: flex;
@@ -9,7 +23,7 @@
 .GamePreviewList h2{
     width: 100%;
     padding-bottom: 0.25em;
-    border-bottom: 2px solid white;
+    border-bottom: 2px solid black;
 }
 
 .GamePreviewList div h4{
@@ -17,7 +31,7 @@
 }
 
 .GamePreviewList div{
-    border: 2px solid white;
+    border: 2px solid black;
     margin: 1%;
     padding: 1%;
     display: flex;
@@ -36,7 +50,7 @@
 .GamePreviewButton{
     width: 98%;
     margin: 1%;
-    color: white;
-    border: 1px solid white;
+    color: black;
+    border: 1px solid black;
     text-align: center;
 } 
