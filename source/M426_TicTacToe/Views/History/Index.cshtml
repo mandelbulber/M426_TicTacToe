@@ -24,7 +24,7 @@
         @foreach (GameViewModel game in Model.Where(g => g.GameState == GameState.pending))
         {
             <div>
-                if (@game.Player2 != null)
+                @if (game.Player2 != null)
                 {
                     <h4>@game.Player1 vs @game.Player2</h4>
                 }
@@ -65,7 +65,7 @@
         @foreach (GameViewModel game in Model.Where(g => g.GameState != GameState.pending))
         {
             <div>
-                if (@game.Player2 != null)
+                @if (game.Player2 != null)
                 {
                     <h4>@game.Player1 vs @game.Player2</h4>
                 }
