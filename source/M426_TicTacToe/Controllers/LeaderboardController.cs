@@ -22,8 +22,8 @@ namespace M426_TicTacToe.Controllers
             var leaderboard = new List<LeaderboardViewModel>();
             foreach(var user in _dbContext.Users.ToList())
             {
-                var gamesAsPlayer1 = _dbContext.Games.Where(g => g.Player1 == user.UserName).ToList();
-                var gamesAsPlayer2 = _dbContext.Games.Where(g => g.Player2 == user.UserName).ToList();
+                var gamesAsPlayer1 = _dbContext.Games.Where(g => g.Player1 == user.Id).ToList();
+                var gamesAsPlayer2 = _dbContext.Games.Where(g => g.Player2 == user.Id).ToList();
                 leaderboard.Add(new LeaderboardViewModel
                 {
                     Name = user.UserName,
@@ -33,7 +33,7 @@ namespace M426_TicTacToe.Controllers
                 });
             }
 
-            leaderboard = leaderboard.OrderBy(l => l.Wins).ToList();
+            leaderboard = leaderboard.OrderByDescending(l => l.Wins).ToList();
             var rank = 1;
             foreach(var user in leaderboard)
             {
