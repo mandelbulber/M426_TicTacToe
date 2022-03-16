@@ -35,11 +35,12 @@ namespace M426_TicTacToe.Controllers
                     {
                         Id = game.Id,
                         Player1 = _dbContext.Users.FirstOrDefault(x => x.Id == game.Player1).UserName,
-                        Player2 = _dbContext.Users.FirstOrDefault(x => x.Id == game.Player2).UserName,
                         TimeStamp = game.TimeStamp,
                         GameState = (GameState)game.Winner,
                         Board = JsonConvert.DeserializeObject<FieldState[]>(game.Board)
                     };
+                    if (_dbContext.Users.FirstOrDefault(x => x.Id == game.Player2) != null)
+                        gameViewModel.Player2 = _dbContext.Users.FirstOrDefault(x => x.Id == game.Player2).UserName;
                     games.Add(gameViewModel);
                 }
             }
