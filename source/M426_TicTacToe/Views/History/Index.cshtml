@@ -51,7 +51,7 @@
                             </tr>
                         }
                 </table>
-                <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", game.Id) + "'");">Continue game</button>
+                <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", new {game.Id}) + "'");">Continue game</button>
             </div>
         }
         <h2>Closed Games (@closedGamesCount)</h2>
@@ -85,7 +85,7 @@
                             </tr>
                         }
                 </table>
-                <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", game.Id) + "'");">See final gamestate</button>
+                <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", new {game.Id}) + "'");">See final gamestate</button>
             </div>
         }
     </div>
