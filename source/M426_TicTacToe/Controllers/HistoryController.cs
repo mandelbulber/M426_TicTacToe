@@ -2,6 +2,7 @@
 using M426_TicTacToe.Enums;
 using M426_TicTacToe.Models;
 using M426_TicTacToe.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using System.Security.Claims;
 
 namespace M426_TicTacToe.Controllers
 {
+    [Authorize]
     public class HistoryController : Controller
     {
         private ApplicationDbContext _dbContext;
