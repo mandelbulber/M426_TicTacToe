@@ -1,0 +1,38 @@
+﻿@using M426_TicTacToe.Models.ViewModels
+@model List<LeaderboardViewModel>
+<style>
+    table, th, td {
+        border: 1px solid;
+    }
+
+    table{
+        width: 100%;
+    }
+
+    .align-left{
+        padding-left: 0.5em;
+        text-align: left;
+    }
+</style>
+<div class="text-center">
+    <h1>Leaderboard</h1>
+    <table>
+        <tr>
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Wins</th>
+            <th>Losses</th>
+            <th>Draws</th>
+        </tr>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Rank</td>
+                <td class="align-left">@user.Name</td>
+                <td>@user.Wins</td>
+                <td>@user.Losses</td>
+                <td>@user.Draws</td>
+            </tr>
+        }
+    </table>
+</div>
