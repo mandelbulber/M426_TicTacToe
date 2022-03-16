@@ -14,7 +14,7 @@ namespace M426_TicTacToe.Controllers
     [Authorize]
     public class HistoryController : Controller
     {
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         public HistoryController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -31,7 +31,7 @@ namespace M426_TicTacToe.Controllers
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userId != null)
             {
-                foreach (Game game in _dbContext.Games.Where(x => x.Player1 == userId || x.Player2 == userId))
+                foreach (Game game in _dbContext.Games.Where(x => x.Player1 == userId || x.Player2 == userId).ToList())
                 {
                     GameViewModel gameViewModel = new()
                     {
