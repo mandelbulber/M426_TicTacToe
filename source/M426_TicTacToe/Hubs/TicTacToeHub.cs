@@ -13,6 +13,18 @@ namespace M426_TicTacToe.Hubs
 {
     public class TicTacToeHub : Hub
     {
+        //All possible Wins
+        static private int[,] Winners = new int[,]
+        {
+            { 0, 1, 2 },
+            { 3, 4, 5 },
+            { 6, 7, 8 },
+            { 0, 3, 6 },
+            { 1, 4, 7 },
+            { 2, 5, 8 },
+            { 0, 4, 8 },
+            { 2, 4, 6 }
+        };
         private ApplicationDbContext _dbContext;
         public TicTacToeHub(ApplicationDbContext dbContext)
         {
@@ -35,10 +47,45 @@ namespace M426_TicTacToe.Hubs
             game.Board = JsonConvert.SerializeObject(fieldStates);
             game.TimeStamp = DateTime.Now;
 
+            //Check if game is over
+            for (var i = 0; i < 8; i++)
+            {
+                int a = Winners[i, 0], b = Winners[i, 1], c = Winners[i, 2];
+                FieldState field1 = fieldStates[a], field2 = fieldStates[b], field3 = fieldStates[c];
+                if (field1 == field2 && field2 == field3)
+                {
+                    switch (field1)
+                    {
+                        case FieldState.none:
+                            break;
+                        case FieldState.player1:
+                            //Player1 won
+                            game.Winner = (int)GameState.player1Won;
+                            break;
+                        case FieldState.player2:
+                            //Player2 won
+                            game.Winner = (int)GameState.player2Won;
+                            break;
+                    }
+                }
+                else if (!fieldStates.Contains(FieldState.none))
+                {
+                    //Draw
+                    game.Winner = (int)GameState.draw;
+                }
+            }
+
             _dbContext.Update(game);
             _dbContext.SaveChanges();
 
             await Clients.Users(game.Player1, game.Player2).SendAsync("UpdateField", fieldNumber, isPlayer1 ? "X" : "O");
+
+            if(!((GameState)game.Winner == GameState.pending))
+            {
+                var winnerId = (GameState)game.Winner == GameState.player1Won ? game.Player1 : game.Player2;
+                var winner = _dbContext.Users.First(u => u.Id == winnerId).UserName;
+                await Clients.Users(game.Player1, game.Player2).SendAsync("EndGame", game.Winner, winner);
+            }
         }
 
 

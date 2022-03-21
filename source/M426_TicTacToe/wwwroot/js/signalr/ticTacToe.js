@@ -12,4 +12,22 @@ connection.start().then(function () {
 
 connection.on("UpdateField", function (fieldNumber, fieldContent) {
     $("#btn" + fieldNumber).text(fieldContent);
+    if ($('#gameState').text() == "X's turn") {
+        $('#gameState').text("O's turn")
+
+    } else {
+        $('#gameState').text("X's turn")
+
+    }
+});
+
+connection.on("EndGame", function (winnerState, winnerName) {
+    if (winnerState === 1) {
+        $("#gameState").text(winnerName + " (X) has won the game");
+    } else if (winnerState === 2) {
+        $("#gameState").text(winnerName + " (O) has won the game");
+    }
+    else {
+        $("#gameState").text("Draw");
+    }
 });
