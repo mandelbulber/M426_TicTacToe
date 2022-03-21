@@ -36,6 +36,7 @@ namespace M426_TicTacToe.Controllers
                 return RedirectToAction("Index");
 
             // Join existing game
+
             if (game.Player2 == null && userId != game.Player1)
             {
                 game.Player2 = userId;
@@ -49,8 +50,8 @@ namespace M426_TicTacToe.Controllers
             GameViewModel gameViewModel = new()
             {
                 Id = game.Id,
-                Player1 = game.Player1,
-                Player2 = game.Player2,
+                Player1 = _dbContext.Users.FirstOrDefault(u => u.Id == game.Player1)?.UserName,
+                Player2 = _dbContext.Users.FirstOrDefault(u => u.Id == game.Player2)?.UserName,
                 TimeStamp = game.TimeStamp,
                 GameState = (GameState)game.Winner,
                 Board = JsonConvert.DeserializeObject<FieldState[]>(game.Board)

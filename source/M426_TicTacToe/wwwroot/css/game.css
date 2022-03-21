@@ -1,4 +1,8 @@
-﻿.GameBoard {
+.Playerlabel{
+    display:flex;
+    justify-content: space-between;
+}
+.GameBoard {
     min-width: 210px;
     width: 50vh;
     min-height: 210px;
@@ -35,4 +39,9 @@
 
 .GameButton:active {
     background-color: #ddd;
+}
+
+.GameState {
+    display: flex;
+    justify-content: center;
 }

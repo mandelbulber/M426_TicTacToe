@@ -3,11 +3,45 @@
 @using M426_TicTacToe.Enums;
 @{
     ViewData["Title"] = "Play";
+    var gameState = string.Empty;
+    switch (Model.GameState)
+    {
+        case GameState.player1Won:
+            gameState = Model.Player1 + " (X) has won the game";
+            break;
+        case GameState.player2Won:
+            gameState = Model.Player2 + " (O) has won the game";
+            break;
+        case GameState.draw:
+            gameState = "Draw";
+            break;
+        case GameState.pending:
+            if (Model.Board.Where(b => b == FieldState.player1).Count() == Model.Board.Where(b => b == FieldState.player2).Count())
+            {
+                gameState = "X's turn";
+            }
+            else
+            {
+                gameState = "O's turn";
+            }
+            break;
+    }
 }
 
-
-<h1>@Model.Player1</h1>
-<h1>@Model.Player2</h1>
+<div class="Playerlabel">
+    <h2>(X) @Model.Player1</h2>
+    @if (Model.Player2 != null)
+    {
+        <h2>@Model.Player2 (O)</h2>
+    }
+    else
+    {
+        <h2>No enemy yet (O)</h2>
+    }
+</div>
+<div class="GameState">
+    <h4 id="gameState">@gameState</h4>
+</div>
 
 <div class="GameBoard">
     @{
@@ -36,5 +70,6 @@
         }
     }
 </div>
+
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/signalr/ticTacToe.js"></script>
