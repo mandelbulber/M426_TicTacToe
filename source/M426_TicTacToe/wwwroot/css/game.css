@@ -1,33 +1,34 @@
-﻿.Playerlabel{
+.Playerlabel{
     display:flex;
     justify-content: space-between;
 }
-
 .GameBoard {
+    min-width: 210px;
     width: 50vh;
+    min-height: 210px;
     height: 50vh;
     margin: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.GameRow {
-    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-.GameCell {
+.GameRow {
     height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.GameCell {
+    width: 100%;
 }
 
 .GameButton {
     width: 100%;
     height: 100%;
     border: 1px solid black;
-    font-size: 60px;
+    font-size: 40px;
     font-family: cursive;
     font-weight: 100;
 }

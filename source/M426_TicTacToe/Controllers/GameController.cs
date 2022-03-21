@@ -16,7 +16,7 @@ namespace M426_TicTacToe.Controllers
     [Authorize]
     public class GameController : Controller
     {
-        private ApplicationDbContext _dbContext;
+        private readonly ApplicationDbContext _dbContext;
         public GameController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;

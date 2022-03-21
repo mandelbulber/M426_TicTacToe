@@ -1,22 +1,51 @@
-﻿@{
+﻿@using M426_TicTacToe.Models.ViewModels 
+@using M426_TicTacToe.Enums
+@model IEnumerable<GameViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1>Demo TicTacToe</h1>
-    <table>
-        <tbody>
-            @for (int i = 0; i < 3; i++)
+<div class="text-center, GamePreviewList">
+    @if (User.Identity.IsAuthenticated)
+    {
+        @foreach (var game in Model)
+        {
+
+            if (game.Player2 == null && game.Player1 != User.Identity.Name)
             {
-                <tr>
-                    @for (int j = 0; j < 3; j++)
-                    {
-                        <td><button class="gameButton" style="height: 100px; width: 100px;" id="btn@(i * 3 + j)"></button></td>
-                    }
-                </tr>
+                <div>
+                    <p>@game.Player1's game</p>
+                    <table>
+                        @for (int i = 0; i < 3; i++)
+                        {
+                            <tr>
+                                @for (int j = 0; j < 3; j++)
+                                {
+                                    <td>
+                                        <button class="GamePreviewButton" disabled>
+                                            @switch (game.Board[i * 3 + j])
+                                            {
+                                                case FieldState.player1:
+                                                    @Html.Raw("X");
+                                                    break;
+                                                case FieldState.player2:
+                                                    @Html.Raw("O");
+                                                    break;
+                                                default:
+                                                    @Html.Raw("&#160;");
+                                                    break;
+                                            }
+                                        </button>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </table>
+
+                    <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", new { game.Id }) + "'");">Join game!</button>
+                </div>
             }
-        </tbody>
-    </table>
+        }
+    }
+
 </div>
-<script src="~/js/signalr/dist/browser/signalr.js"></script>
-<script src="~/js/signalr/ticTacToe.js"></script>
