@@ -6,8 +6,13 @@ $(".gameButton").prop("disabled", true);
 
 connection.start().then(function () {
     $(".gameButton").prop("disabled", false);
+    connection.invoke("IsUserPlayer2", $("#gameId").val());
 }).catch(function (err) {
     return console.error(err.toString());
+});
+
+connection.on("UpdatePlayer2", function (name) {
+    $("#player2").text(name + " (O)");
 });
 
 connection.on("UpdateField", function (fieldNumber, fieldContent) {

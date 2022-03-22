@@ -33,7 +33,11 @@ namespace M426_TicTacToe.Controllers
                 });
             }
 
-            leaderboard = leaderboard.OrderByDescending(l => l.Wins).ToList();
+            leaderboard = leaderboard.OrderByDescending(l => l.Wins)
+                .ThenBy(l => l.Losses)
+                .ThenByDescending(l => l.Draws)
+                .ToList();
+
             var rank = 1;
             foreach(var user in leaderboard)
             {
