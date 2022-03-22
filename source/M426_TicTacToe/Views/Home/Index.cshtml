@@ -1,8 +1,51 @@
-﻿@{
+﻿@using M426_TicTacToe.Models.ViewModels 
+@using M426_TicTacToe.Enums
+@model IEnumerable<GameViewModel>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center, GamePreviewList">
+    @if (User.Identity.IsAuthenticated)
+    {
+        @foreach (var game in Model)
+        {
+
+            if (game.Player2 == null && game.Player1 != User.Identity.Name)
+            {
+                <div>
+                    <p>@game.Player1's game</p>
+                    <table>
+                        @for (int i = 0; i < 3; i++)
+                        {
+                            <tr>
+                                @for (int j = 0; j < 3; j++)
+                                {
+                                    <td>
+                                        <button class="GamePreviewButton" disabled>
+                                            @switch (game.Board[i * 3 + j])
+                                            {
+                                                case FieldState.player1:
+                                                    @Html.Raw("X");
+                                                    break;
+                                                case FieldState.player2:
+                                                    @Html.Raw("O");
+                                                    break;
+                                                default:
+                                                    @Html.Raw("&#160;");
+                                                    break;
+                                            }
+                                        </button>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </table>
+
+                    <button onclick="@("window.location.href='" + @Url.Action("Game", "Game", new { game.Id }) + "'");">Join game!</button>
+                </div>
+            }
+        }
+    }
+
 </div>

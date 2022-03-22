@@ -1,0 +1,77 @@
+﻿@model GameViewModel;
+@using M426_TicTacToe.Models.ViewModels;
+@using M426_TicTacToe.Enums;
+@{
+    ViewData["Title"] = "Play";
+    var gameState = string.Empty;
+    switch (Model.GameState)
+    {
+        case GameState.player1Won:
+            gameState = Model.Player1 + " (X) has won the game";
+            break;
+        case GameState.player2Won:
+            gameState = Model.Player2 + " (O) has won the game";
+            break;
+        case GameState.draw:
+            gameState = "Draw";
+            break;
+        case GameState.pending:
+            if (Model.Board.Where(b => b == FieldState.player1).Count() == Model.Board.Where(b => b == FieldState.player2).Count())
+            {
+                gameState = "X's turn";
+            }
+            else
+            {
+                gameState = "O's turn";
+            }
+            break;
+    }
+}
+
+<input type="hidden" id="gameId" value="@Model.Id"/>
+
+<div class="Playerlabel">
+    <h2>(X) @Model.Player1</h2>
+    @if (Model.Player2 != null)
+    {
+        <h2 id="player2">@Model.Player2 (O)</h2>
+    }
+    else
+    {
+        <h2 id="player2">No enemy yet (O)</h2>
+    }
+</div>
+<div class="GameState">
+    <h4 id="gameState">@gameState</h4>
+</div>
+
+<div class="GameBoard">
+    @{
+        for (int i = 0; i < 3; i++)
+        {
+            <div class="GameRow">
+                @for (int j = 0; j < 3; j++)
+                {
+                    <div class="GameCell">
+                        <button onclick="connection.invoke('ClickField', @Html.Raw("'" + Model.Id + "'"), @(i * 3 + j))" class="GameButton" id="@Html.Raw("btn" + (i * 3 + j))">
+                            @switch (Model.Board[i * 3 + j])
+                            {
+                                case FieldState.player1:
+                                    @Html.Raw("X")
+                                    ;
+                                    break;
+                                case FieldState.player2:
+                                    @Html.Raw("O")
+                                    ;
+                                    break;
+                            }
+                        </button>
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/signalr/ticTacToe.js"></script>
