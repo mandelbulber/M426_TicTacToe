@@ -31,6 +31,18 @@ namespace M426_TicTacToe.Hubs
             _dbContext = dbContext;
         }
 
+        public async Task IsUserPlayer2(string gameId)
+        {
+            var userId = Context.UserIdentifier;
+            var game = _dbContext.Games.ToList().FirstOrDefault(x => x.Id == gameId);
+            if (game?.Player2 != null)
+            { 
+                var player2 = _dbContext.Users.First(u => u.Id == game.Player2).UserName;
+                await Clients.Users(game.Player1).SendAsync("UpdatePlayer2", player2);
+            }
+
+        }
+
         public async Task ClickField(string gameId, int fieldNumber)
         {
             // Setup variables
