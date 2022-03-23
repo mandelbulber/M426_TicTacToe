@@ -1,5 +1,7 @@
 # M426 TicTacToe Dokumentation
 
+[TOC]
+
 ## Einleitung
 
 Der Sinn der folgenden Dokumentation liegt darin, Dinge aufzuzeigen, welche wir gemacht haben, wie wir gewisse Dinge gemacht haben und sonstige Sachen.
@@ -108,9 +110,14 @@ Der Source Code ist im dementsprechendem Ordner (source) zu finden (Repository/s
   - Ist nicht eingerichtet
   - Docker ist jedoch eingerichtet, um die WebApp zu deployen
 
-## Tests WIP
+## Tests
 
 ### Unit Tests
+
+Alle alleinstehende Methoden, bei denen es Sinn ergibt, diese zu testen, wurden mit Unit Tests abgedeckt. Private Methoden wurden nicht beachtet.
+
+Die Code-Coverage, welche vom Visual Studio berechnet wird ist in unserem Fall recht niedrig. Dies liegt daran, dass Dinge beachtet werden, welche wir nicht testen können, oder es einfach keinen Sinn ergibt, diese zu testen.
+Somit sollte die Code-Coverage von unserem Code auf fast 100% liegen.
 
 ### Exploratory Testing
 
