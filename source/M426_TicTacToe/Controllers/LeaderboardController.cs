@@ -1,11 +1,9 @@
-﻿using M426_TicTacToe.Models.ViewModels;
-using M426_TicTacToe.Data;
+﻿using M426_TicTacToe.Data;
+using M426_TicTacToe.Enums;
+using M426_TicTacToe.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using M426_TicTacToe.Enums;
 
 namespace M426_TicTacToe.Controllers
 {

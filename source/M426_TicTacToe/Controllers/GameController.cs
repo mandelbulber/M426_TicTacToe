@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
-using M426_TicTacToe.Hubs;
+﻿using M426_TicTacToe.Data;
+using M426_TicTacToe.Enums;
 using M426_TicTacToe.Models;
 using M426_TicTacToe.Models.ViewModels;
-using M426_TicTacToe.Data;
-using M426_TicTacToe.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Security.Claims;
-using Newtonsoft.Json;
 
 namespace M426_TicTacToe.Controllers
 {

@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using M426_TicTacToe.Data;
+using M426_TicTacToe.Enums;
+using M426_TicTacToe.Models;
+using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using M426_TicTacToe.Data;
-using M426_TicTacToe.Models;
-using M426_TicTacToe.Enums;
-using Newtonsoft.Json;
 
 namespace M426_TicTacToe.Hubs
 {
