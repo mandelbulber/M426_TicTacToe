@@ -36,7 +36,7 @@ namespace M426_TicTacToe.Hubs
             var userId = Context.UserIdentifier;
             var game = _dbContext.Games.ToList().FirstOrDefault(x => x.Id == gameId);
             if (game?.Player2 != null)
-            { 
+            {
                 var player2 = _dbContext.Users.First(u => u.Id == game.Player2).UserName;
                 await Clients.Users(game.Player1).SendAsync("UpdatePlayer2", player2);
             }
@@ -80,11 +80,11 @@ namespace M426_TicTacToe.Hubs
                             break;
                     }
                 }
-                else if (!fieldStates.Contains(FieldState.none))
-                {
-                    //Draw
-                    game.Winner = (int)GameState.draw;
-                }
+            }
+            if (!fieldStates.Contains(FieldState.none) && game.Winner == (int)FieldState.none)
+            {
+                //Draw
+                game.Winner = (int)GameState.draw;
             }
 
             _dbContext.Update(game);
@@ -92,7 +92,7 @@ namespace M426_TicTacToe.Hubs
 
             await Clients.Users(game.Player1, game.Player2).SendAsync("UpdateField", fieldNumber, isPlayer1 ? "X" : "O");
 
-            if(!((GameState)game.Winner == GameState.pending))
+            if (!((GameState)game.Winner == GameState.pending))
             {
                 var winnerId = (GameState)game.Winner == GameState.player1Won ? game.Player1 : game.Player2;
                 var winner = _dbContext.Users.First(u => u.Id == winnerId).UserName;
