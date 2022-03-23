@@ -1,16 +1,27 @@
-﻿@using M426_TicTacToe.Models.ViewModels 
+﻿@using M426_TicTacToe.Models.ViewModels
 @using M426_TicTacToe.Enums
 @model IEnumerable<GameViewModel>
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center, GamePreviewList">
-    @if (User.Identity.IsAuthenticated)
+
+<h1>M426 TicTacToe</h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>For more options, look at the navigation bar.</p>
+    if (Model.Where(x => x.Player2 == null && x.Player1 != User.Identity.Name).Count() > 0)
     {
+        <p>Join a game:</p>
+    }
+    else
+    {
+        <p>No joinable game available.</p>
+    }
+    <div class="text-center GamePreviewList">
         @foreach (var game in Model)
         {
-
             if (game.Player2 == null && game.Player1 != User.Identity.Name)
             {
                 <div>
@@ -46,6 +57,10 @@
                 </div>
             }
         }
-    }
+    </div>
+}
+else
+{
+    <p>Please log in and look at the Navigation Bar.</p>
+}
 
-</div>
