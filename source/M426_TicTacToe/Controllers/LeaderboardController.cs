@@ -1,11 +1,9 @@
-﻿using M426_TicTacToe.Models.ViewModels;
-using M426_TicTacToe.Data;
+﻿using M426_TicTacToe.Data;
+using M426_TicTacToe.Enums;
+using M426_TicTacToe.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using M426_TicTacToe.Enums;
 
 namespace M426_TicTacToe.Controllers
 {
@@ -24,13 +22,22 @@ namespace M426_TicTacToe.Controllers
             {
                 var gamesAsPlayer1 = _dbContext.Games.Where(g => g.Player1 == user.Id).ToList();
                 var gamesAsPlayer2 = _dbContext.Games.Where(g => g.Player2 == user.Id).ToList();
-                leaderboard.Add(new LeaderboardViewModel
+
+                if (gamesAsPlayer1.Count() + gamesAsPlayer2.Count() != 0)
                 {
-                    Name = user.UserName,
-                    Wins = gamesAsPlayer1.Where(g => (GameState)g.Winner == GameState.player1Won).ToList().Count() + gamesAsPlayer2.Where(g => (GameState)g.Winner == GameState.player2Won).ToList().Count(),
-                    Losses = gamesAsPlayer1.Where(g => (GameState)g.Winner == GameState.player2Won).ToList().Count() + gamesAsPlayer2.Where(g => (GameState)g.Winner == GameState.player1Won).ToList().Count(),
-                    Draws = gamesAsPlayer1.Where(g => (GameState)g.Winner == GameState.draw).ToList().Count() + gamesAsPlayer2.Where(g => (GameState)g.Winner == GameState.draw).ToList().Count()
-                });
+                    var leaderboardModel = new LeaderboardViewModel
+                    {
+                        Name = user.UserName,
+                        Wins = gamesAsPlayer1.Where(g => (GameState)g.Winner == GameState.player1Won).ToList().Count() + gamesAsPlayer2.Where(g => (GameState)g.Winner == GameState.player2Won).ToList().Count(),
+                        Losses = gamesAsPlayer1.Where(g => (GameState)g.Winner == GameState.player2Won).ToList().Count() + gamesAsPlayer2.Where(g => (GameState)g.Winner == GameState.player1Won).ToList().Count(),
+                        Draws = gamesAsPlayer1.Where(g => (GameState)g.Winner == GameState.draw).ToList().Count() + gamesAsPlayer2.Where(g => (GameState)g.Winner == GameState.draw).ToList().Count()
+
+                    };
+                    if (leaderboardModel.Wins + leaderboardModel.Losses + leaderboardModel.Draws != 0) 
+                    {
+                        leaderboard.Add(leaderboardModel);
+                    }
+                }
             }
 
             leaderboard = leaderboard.OrderByDescending(l => l.Wins)

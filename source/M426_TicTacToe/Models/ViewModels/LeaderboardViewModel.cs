@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace M426_TicTacToe.Models.ViewModels
+﻿namespace M426_TicTacToe.Models.ViewModels
 {
     public class LeaderboardViewModel
     {
