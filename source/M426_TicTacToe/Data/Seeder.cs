@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
-using M426_TicTacToe.Data;
-using Microsoft.AspNetCore.Identity;
-using M426_TicTacToe.Models;
 
 namespace M426_TicTacToe.Data
 {
